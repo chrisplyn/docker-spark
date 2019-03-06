@@ -1,7 +1,7 @@
 version: "2.2"
 services:
   master:
-    image: gettyimages/spark
+    image: yinuo:1.0.0
     command: bin/spark-class org.apache.spark.deploy.master.Master -h master
     hostname: master
     environment:
@@ -21,12 +21,30 @@ services:
       - 6066:6066
       - 7077:7077
       - 8080:8080
+      
     volumes:
       - ./conf/master:/conf
       - ./data:/tmp/data
+  pyspark:
+    image: yinuo:1.0.0
+    command: bin/pyspark --master spark://master:7077
+    hostname: pyspark
+    environment:
+        PYSPARK_DRIVER_PYTHON: jupyter
+        PYSPARK_DRIVER_PYTHON_OPTS: notebook --ip 0.0.0.0 --no-browser --allow-root    
+    volumes:
+      - ./conf/master:/conf
+      - ./data:/tmp/data
+    ports:
+      - 8888:8888
+    links:
+        - master
+    depends_on:
+        - master
+
 
   worker:
-    image: gettyimages/spark
+    image: yinuo:1.0.0
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
     hostname: worker
     environment:

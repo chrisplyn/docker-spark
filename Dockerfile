@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM ubuntu:16.04
 MAINTAINER Getty Images "https://github.com/gettyimages"
 
 RUN apt-get update \
@@ -24,6 +24,10 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
+RUN pip3 install jupyter
+
+
+
 # http://blog.stuart.axelbrooke.com/python-3-on-spark-return-of-the-pythonhashseed
 ENV PYTHONHASHSEED 0
 ENV PYTHONIOENCODING UTF-8
@@ -43,6 +47,8 @@ RUN curl -sL --retry 3 --insecure \
   | tar x -C /usr/ \
   && ln -s $JAVA_HOME /usr/java \
   && rm -rf $JAVA_HOME/man
+
+
 
 # HADOOP
 ENV HADOOP_VERSION 3.0.0
