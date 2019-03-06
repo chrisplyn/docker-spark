@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM debian:stretch
 MAINTAINER Getty Images "https://github.com/gettyimages"
 
 RUN apt-get update \

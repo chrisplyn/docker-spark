@@ -1,7 +1,7 @@
 version: "2.2"
 services:
   master:
-    image: yinuo:1.0.0
+    image: chrisplyn/yinuo_docker_repo:yinuo
     command: bin/spark-class org.apache.spark.deploy.master.Master -h master
     hostname: master
     environment:
@@ -24,9 +24,9 @@ services:
       
     volumes:
       - ./conf/master:/conf
-      - ./data:/tmp/data
+      - ./data:/data
   pyspark:
-    image: yinuo:1.0.0
+    image: chrisplyn/yinuo_docker_repo:yinuo
     command: bin/pyspark --master spark://master:7077
     hostname: pyspark
     environment:
@@ -44,7 +44,7 @@ services:
 
 
   worker:
-    image: yinuo:1.0.0
+    image: chrisplyn/yinuo_docker_repo:yinuo
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
     hostname: worker
     environment:
